@@ -1,2 +1,2 @@
-# face--detection
+# face-detection
 face detection using machine learning
