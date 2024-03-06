@@ -1,8 +1,15 @@
+
 import cv2
 import os
-cascPath=os.path.dirname(cv2.__file__)+"/data/haarcascade_frontalface_default.xml"
+
+cascPath =os.path.dirname(cv2.__file__)+"/data/haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascPath)
 video_capture = cv2.VideoCapture(0)
+
+frame_counter = 0
+fourcc = cv2.VideoWriter_fourcc(*'XVID')
+output_filename = 'output_faces.avi'
+output = cv2.VideoWriter(output_filename, fourcc, 20.0, (640, 480))
 
 while True:
     # Capture frame-by-frame
@@ -25,7 +32,14 @@ while True:
     # Display the resulting frame
     cv2.imshow('Live Video', frames)
 
+    # Save the frame with a bounding box around the faces
+    output.write(frames)
+    frame_counter += 1
+
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
+
 video_capture.release()
 cv2.destroyAllWindows()
+output.release()
+print(f'Saved {frame_counter} frames to {output_filename}')
